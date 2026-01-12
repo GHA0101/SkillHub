@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkillHub - Marketplace du Futur</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #0f0f1e 100%);
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        .stars {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #fff;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        header {
+            position: relative;
+            padding: 20px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(10, 10, 10, 0.5);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            background: linear-gradient(45deg, #00f5ff, #00ff88);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(0, 245, 255, 0.5);
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 20px;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        nav a:hover {
+            color: #00f5ff;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #00f5ff, #00ff88);
+            transition: width 0.3s;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .hero {
+            position: relative;
+            padding: 120px 5% 80px;
+            text-align: center;
+            z-index: 10;
+        }
+
+        .hero h1 {
+            font-size: 64px;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #00f5ff, #00ff88, #ff00ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { filter: drop-shadow(0 0 20px rgba(0, 245, 255, 0.6)); }
+            50% { filter: drop-shadow(0 0 40px rgba(0, 245, 255, 0.9)); }
+        }
+
+        .hero p {
+            font-size: 22px;
+            color: #b0b0b0;
+            margin-bottom: 40px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 18px 50px;
+            background: linear-gradient(45deg, #00f5ff, #00ff88);
+            color: #000;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 18px;
+            border-radius: 50px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+            box-shadow: 0 0 30px rgba(0, 245, 255, 0.5);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 50px rgba(0, 245, 255, 0.8);
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.5s, height 0.5s;
+        }
+
+        .cta-button:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .skills-grid {
+            position: relative;
+            padding: 80px 5%;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            z-index: 10;
+        }
+
+        .skill-card {
+            background: rgba(26, 26, 46, 0.6);
+            padding: 40px;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 245, 255, 0.3);
+            backdrop-filter: blur(10px);
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skill-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(0, 245, 255, 0.1), transparent);
+            transform: rotate(45deg);
+            transition: all 0.6s;
+        }
+
+        .skill-card:hover::before {
+            left: 100%;
+        }
+
+        .skill-card:hover {
+            transform: translateY(-10px);
+            border-color: #00f5ff;
+            box-shadow: 0 20px 60px rgba(0, 245, 255, 0.4);
+        }
+
+        .skill-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .skill-card h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #00f5ff;
+        }
+
+        .skill-card p {
+            color: #b0b0b0;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .price {
+            font-size: 28px;
+            font-weight: bold;
+            color: #00ff88;
+            margin-bottom: 20px;
+        }
+
+        .buy-btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: rgba(0, 245, 255, 0.2);
+            border: 2px solid #00f5ff;
+            color: #00f5ff;
+            text-decoration: none;
+            border-radius: 30px;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        .buy-btn:hover {
+            background: #00f5ff;
+            color: #000;
+            transform: scale(1.05);
+        }
+
+        .features {
+            position: relative;
+            padding: 80px 5%;
+            text-align: center;
+            z-index: 10;
+        }
+
+        .features h2 {
+            font-size: 48px;
+            margin-bottom: 60px;
+            background: linear-gradient(45deg, #00f5ff, #ff00ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+        }
+
+        .feature-item {
+            padding: 30px;
+        }
+
+        .feature-item .icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .feature-item h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: #00ff88;
+        }
+
+        footer {
+            position: relative;
+            padding: 40px 5%;
+            text-align: center;
+            background: rgba(10, 10, 10, 0.8);
+            border-top: 1px solid rgba(0, 245, 255, 0.2);
+            z-index: 10;
+        }
+
+        .glowing-orb {
+            position: fixed;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.3;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .orb1 {
+            background: #00f5ff;
+            top: 10%;
+            left: 10%;
+            animation: float-orb1 8s infinite;
+        }
+
+        .orb2 {
+            background: #ff00ff;
+            top: 50%;
+            right: 10%;
+            animation: float-orb2 10s infinite;
+        }
+
+        .orb3 {
+            background: #00ff88;
+            bottom: 10%;
+            left: 50%;
+            animation: float-orb3 12s infinite;
+        }
+
+        @keyframes float-orb1 {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(50px, 50px); }
+        }
+
+        @keyframes float-orb2 {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(-50px, -50px); }
+        }
+
+        @keyframes float-orb3 {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(50px, -50px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+    
+    <div class="glowing-orb orb1"></div>
+    <div class="glowing-orb orb2"></div>
+    <div class="glowing-orb orb3"></div>
+
+    <header>
+        <div class="logo">⚡ SkillHub</div>
+        <nav>
+            <a href="#home">Accueil</a>
+            <a href="#skills">Compétences</a>
+            <a href="#features">Avantages</a>
+        </nav>
+    </header>
+
+    <section class="hero" id="home">
+        <h1>Le Futur des Compétences</h1>
+        <p>Achetez des compétences de niveau expert sur la plateforme la plus innovante</p>
+        <a href="#skills" class="cta-button">Explorer Maintenant</a>
+    </section>
+
+    <section class="skills-grid" id="skills">
+        <div class="skill-card">
+            <div class="skill-icon">🎨</div>
+            <h3>Design UI/UX</h3>
+            <p>Expertise en création d'interfaces modernes et expériences utilisateur exceptionnelles</p>
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSdjbRFkuhKEbB1xN7eONslA9NNj4DtGYqjcntIyKv44s2-9_w/viewform?usp=dialog" class="buy-btn">Contactez-nous</a>
+        </div>
+
+        <div class="skill-card">
+            <div class="skill-icon">💻</div>
+            <h3>Développement Web</h3>
+            <p>Maîtrise complète des technologies front-end et back-end pour créer des applications performantes</p>
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSdjbRFkuhKEbB1xN7eONslA9NNj4DtGYqjcntIyKv44s2-9_w/viewform?usp=dialog" class="buy-btn">Contactez-Nous</a>
+        </div>
+
+       
+
+      
+    </section>
+
+    <section class="features" id="features">
+        <h2>Pourquoi SkillHub ?</h2>
+        <div class="features-grid">
+            <div class="feature-item">
+                <div class="icon">⚡</div>
+                <h3>Instantané</h3>
+                <p>Accès immédiat aux compétences après achat</p>
+            </div>
+            <div class="feature-item">
+                <div class="icon">🛡️</div>
+                <h3>Sécurisé</h3>
+                <p>Transactions cryptées et données protégées</p>
+            </div>
+            <div class="feature-item">
+                <div class="icon">🌍</div>
+                <h3>Global</h3>
+                <p>Marketplace international disponible WeekEnd</p>
+            </div>
+            <div class="feature-item">
+                <div class="icon">💎</div>
+                <h3>Qualité Premium</h3>
+                <p>Compétences vérifiées</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 SkillHub. Le futur des compétences commence ici.</p>
+    </footer>
+
+    <script>
+        // Créer des étoiles animées
+        const starsContainer = document.getElementById('stars');
+        for (let i = 0; i < 100; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.animationDelay = Math.random() * 3 + 's';
+            starsContainer.appendChild(star);
+        }
+
+        // Animation smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Effet de parallaxe sur les orbes
+        document.addEventListener('mousemove', (e) => {
+            const orbs = document.querySelectorAll('.glowing-orb');
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            orbs.forEach((orb, index) => {
+                const speed = (index + 1) * 20;
+                orb.style.transform = `translate(${x * speed}px, ${y * speed}px)`;
+            });
+        });
+    </script>
+</body>
+</html>
